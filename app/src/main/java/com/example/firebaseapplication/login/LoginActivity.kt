@@ -17,17 +17,23 @@ import com.example.firebaseapplication.network.dto.User
 import com.example.firebaseapplication.utils.UserValidate
 import com.example.firebaseapplication.utils.Utils
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
 
     lateinit var binding:ActivityLoginBinding
     private var registeredUser:RegisterUser? = null
+    lateinit var mAuth:FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_login)
+        initui()
         load()
         clickListner()
+    }
+    private fun initui(){
+        mAuth = FirebaseAuth.getInstance()
     }
     private fun load(){
         val intent = getIntent().extras
@@ -35,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
         Log.d("TAG", "load: user ${registeredUser?.name} pass${registeredUser?.password}email${registeredUser?.password} ")
        if (registeredUser != null){
            registeredUser.let {
-               binding.edtxUsername.setText(it?.name)
+               binding.edtxEmail.setText(it?.name)
                binding.edtxpassword.setText(it?.password)
            }
        }
@@ -43,14 +49,14 @@ class LoginActivity : AppCompatActivity() {
 
     private fun clickListner() {
         binding.btLogin.setOnClickListener {
-            val name = binding.edtxUsername.text.toString()
+            val email = binding.edtxEmail.text.toString()
             val password = binding.edtxpassword.text.toString()
-            val user = User(name = name, password = password)
-            when(Utils.validate(name,password)){
+            val user = RegisterUser(null,email,password)
+            when(Utils.validate(email,password)){
                 UserValidate.INVALIDUSER -> {
                     Toast.makeText(this,"please enter user name",Toast.LENGTH_SHORT).show()
-                    binding.layoutusername.isErrorEnabled = true
-                    Utils.textInputError(true,binding.layoutusername,"please enter user name")
+                    binding.layoutEmail.isErrorEnabled = true
+                    Utils.textInputError(true,binding.layoutEmail,"please enter user name")
                 }
                 UserValidate.INVALIDPASSWORD -> {
                     Toast.makeText(this,"please enter password",Toast.LENGTH_SHORT).show()
@@ -58,12 +64,9 @@ class LoginActivity : AppCompatActivity() {
                 }
                 UserValidate.VALID -> {
                     Utils.textInputError(false,binding.layoutpassword,null)
-                    Utils.textInputError(false,binding.layoutusername,null)
-                    val intent = Intent(this,MainActivity::class.java)
-                    intent.putExtra("user",user)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                    startActivity(intent)
-                    finish()
+                    Utils.textInputError(false,binding.layoutEmail,null)
+                    signInUser(user)
+
                 }
             }
 
@@ -73,6 +76,24 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this,RegisterActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun signInUser(user: RegisterUser){
+        mAuth.signInWithEmailAndPassword(user.email,user.password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful){
+                    val currentUser = mAuth.currentUser?.metadata
+                    Log.d("TAG", "signInUser: ${currentUser.toString()}")
+                    val intent = Intent(this,MainActivity::class.java)
+                    intent.putExtra("user",user)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    startActivity(intent)
+                    finish()
+                }else{
+                    Toast.makeText(baseContext, "Invalid Credential Please check email password.",
+                        Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 }
 

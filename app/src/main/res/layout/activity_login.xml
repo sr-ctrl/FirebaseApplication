@@ -19,23 +19,23 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layoutusername"
+            android:id="@+id/layoutEmail"
             style="@style/TextInputLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="username"
+            android:hint="Email"
             android:layout_marginTop="@dimen/dp_20"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtlogin">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtx_username"
+                android:id="@+id/edtx_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints="no"
                 android:background="@null"
                 android:fontFamily="@font/lato"
-                android:inputType="text"
+                android:inputType="textEmailAddress"
                 android:textSize="@dimen/sp_18" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -48,7 +48,7 @@
             android:hint="Password"
             app:passwordToggleEnabled="true"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layoutusername">
+            app:layout_constraintTop_toBottomOf="@id/layoutEmail">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edtxpassword"

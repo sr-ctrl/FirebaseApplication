@@ -9,12 +9,13 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.example.firebaseapplication.base.BaseActivity
 import com.example.firebaseapplication.databinding.ActivityMainBinding
+import com.example.firebaseapplication.network.dto.RegisterUser
 import com.example.firebaseapplication.network.dto.User
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
-    private var user:User? = null
+    private var user:RegisterUser? = null
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun load() {
         val intent = getIntent().extras
-         user = intent?.getParcelable<User>("user")
+         user = intent?.getParcelable("user")
         Log.d("TAG", "load: user ${user?.name} pass${user?.password} ")
         binding.username.setText(user?.name)
     }

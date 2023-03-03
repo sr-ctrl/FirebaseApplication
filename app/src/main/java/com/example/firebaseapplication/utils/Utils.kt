@@ -1,5 +1,9 @@
 package com.example.firebaseapplication.utils
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.os.Parcelable
 import androidx.core.view.setPadding
 import com.google.android.material.textfield.TextInputLayout
 
