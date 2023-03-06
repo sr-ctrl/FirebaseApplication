@@ -1,22 +1,17 @@
 package com.example.firebaseapplication.login
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.core.view.setPadding
 import androidx.databinding.DataBindingUtil
 import com.example.firebaseapplication.MainActivity
 import com.example.firebaseapplication.R
-import com.example.firebaseapplication.base.BaseActivity
 import com.example.firebaseapplication.databinding.ActivityLoginBinding
 import com.example.firebaseapplication.network.dto.RegisterUser
-import com.example.firebaseapplication.network.dto.User
 import com.example.firebaseapplication.utils.UserValidate
 import com.example.firebaseapplication.utils.Utils
-import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
@@ -84,7 +79,7 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful){
                     val currentUser = mAuth.currentUser?.metadata
                     Log.d("TAG", "signInUser: ${currentUser.toString()}")
-                    val intent = Intent(this,MainActivity::class.java)
+                    val intent = Intent(this, MainActivity::class.java)
                     intent.putExtra("user",user)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                     startActivity(intent)
